@@ -1,9 +1,10 @@
 import './App.css';
+import AppRoutes from './Routes/AppRoutes';
 
 function App() {
   return (
     <div className='App'>
-      <h1>Serverless B&B</h1>
+      <AppRoutes />
     </div>
   );
 }
