@@ -1,0 +1,56 @@
+---
+swagger: '2.0'
+info:
+  title: serverlessbnb-api-gateway
+  description: serverlessbnb-api-gateway
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /get-meals:
+    get:
+      description: 'get-meals'
+      operationId: 'get-meals'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-meals
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
+  /get-tours:
+    get:
+      description: 'get-tours'
+      operationId: 'get-tours'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-tours
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
+  /get-rooms:
+    get:
+      description: 'get-rooms'
+      operationId: 'get-rooms'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-rooms
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
