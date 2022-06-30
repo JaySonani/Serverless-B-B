@@ -5,7 +5,7 @@ import { ReactComponent as ReactLogo } from '../Assets/logo.svg';
 const Footer = () => {
   return (
     <Navbar fixed='bottom' bg='dark' variant='dark'>
-      <Container style={{ height: '40vh' }}>
+      <Container style={{ height: '30vh' }}>
         <Navbar.Brand href='#home'>
           <ReactLogo style={{ width: '30vw', height: '15vh' }} />
         </Navbar.Brand>
