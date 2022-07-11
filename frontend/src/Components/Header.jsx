@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <Navbar sticky='top' collapseOnSelect expand='lg' bg='dark' variant='dark'>
       <Container>
-        <Navbar.Brand href='#home'>
+        <Navbar.Brand onClick={() => navigate('/')}>
           <ReactLogo style={{ width: '20vw', height: '10vh' }} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='responsive-navbar-nav' />

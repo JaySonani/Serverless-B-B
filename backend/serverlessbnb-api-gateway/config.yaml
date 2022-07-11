@@ -8,6 +8,10 @@ schemes:
   - https
 produces:
   - application/json
+host: 'serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog'
+x-google-endpoints:
+  - name: 'serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog'
+    allowCors: True
 paths:
   /get-meals:
     get:
@@ -45,6 +49,34 @@ paths:
       operationId: 'get-rooms'
       x-google-backend:
         address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-rooms
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
+  /book-meal:
+    post:
+      description: 'book-meal'
+      operationId: 'book-meal'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+              quantity:
+                type: number
+              user:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/book-meal
       responses:
         '200':
           description: 'Success'
