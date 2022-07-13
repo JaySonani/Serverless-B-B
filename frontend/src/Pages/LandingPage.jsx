@@ -1,13 +1,10 @@
 import React from 'react';
-import Footer from '../Components/Footer';
-import Header from '../Components/Header';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 
 const LandingPage = () => {
   return (
     <>
-      <Header />
       <div style={{ display: 'flex', margin: '5vh' }}>
         <Container>
           <h1 align='left' style={{ marginBottom: '5vh' }}>
@@ -33,7 +30,6 @@ const LandingPage = () => {
           </Table>
         </Container>
       </div>
-      <Footer />
     </>
   );
 };

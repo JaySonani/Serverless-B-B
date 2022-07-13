@@ -53,9 +53,10 @@ exports.main = async (req, res) => {
       await ref.update({ availability: availability });
       orderObj.order_id = response.id;
       await publishMessage(pubSubClient, 'meal_order', orderObj);
-      res
-        .status(200)
-        .json({ success: true, message: `Order Placed, ID: ${response.id}` });
+      res.status(200).json({
+        success: true,
+        message: `Meal Order Placed, ID: ${response.id}`,
+      });
     }
     res.status(200).json({ success: false, message: 'Something Went Wrong!' });
   } catch (e) {
