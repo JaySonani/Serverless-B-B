@@ -1,8 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
@@ -31,7 +29,6 @@ const TourBookingPage = () => {
   }, []);
   return (
     <>
-      <Header />
       {loading && <h1>Loading...</h1>}
       {!loading && (
         <div style={{ display: 'flex', margin: '5vh' }}>
@@ -91,7 +88,6 @@ const TourBookingPage = () => {
           </Container>
         </div>
       )}
-      <Footer />
     </>
   );
 };

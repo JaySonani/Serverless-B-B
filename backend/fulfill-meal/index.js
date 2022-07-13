@@ -7,6 +7,12 @@ admin.initializeApp({
 const db = admin.firestore();
 const pubSubClient = new PubSub();
 
+const publishMessage = async (pubSubClient, topicName, payload) => {
+  const dataBuffer = Buffer.from(JSON.stringify(payload));
+  const messageId = await pubSubClient.topic(topicName).publish(dataBuffer);
+  return messageId;
+};
+
 exports.main = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -19,15 +25,18 @@ exports.main = async (req, res) => {
   try {
     const subscription = pubSubClient.subscription('meal_order_sub');
     const messageHandler = async (message) => {
-      console.log(`Received message ${message.id}:`);
-      console.log(`\tData: ${message.data}`);
-      console.log(`\tAttributes: ${message.attributes}`);
+      let messageReceived = JSON.parse(message.data);
       await db
         .collection('meal_booking')
-        .doc(JSON.parse(message.data).order_id)
-        .update({ status: 'Received' });
+        .doc(messageReceived.order_id)
+        .update({ status: 'Delivered' });
       message.ack();
+      await publishMessage(pubSubClient, 'notifications', {
+        customer_id: messageReceived.customer_id,
+        message: `Meal Order ID: ${messageReceived.order_id} Delivered`,
+      });
     };
+
     subscription.on('message', messageHandler);
     setTimeout(() => {
       subscription.removeListener('message', messageHandler);
@@ -35,7 +44,7 @@ exports.main = async (req, res) => {
         success: true,
         message: 'Orders Received',
       });
-    }, 10 * 1000);
+    }, 30 * 1000);
   } catch (e) {
     console.log(e);
     return res.status(500).json({
