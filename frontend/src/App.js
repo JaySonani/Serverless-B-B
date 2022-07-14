@@ -7,7 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
+
   fetchToken(setTokenFound);
+
   onMessageListener()
     .then((payload) => {
       console.log(payload);
@@ -17,7 +19,8 @@ function App() {
 
   return (
     <div className='App'>
-      <AppRoutes />
+      {!isTokenFound && <h1>Please Provide Notification Permissions</h1>}
+      {isTokenFound && <AppRoutes />}
       <ToastContainer />
     </div>
   );

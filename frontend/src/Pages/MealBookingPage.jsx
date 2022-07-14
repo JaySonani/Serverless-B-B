@@ -6,13 +6,14 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { useOutletContext } from 'react-router-dom';
 
 const MealBookingPage = () => {
   const [loading, setLoading] = useState(true);
   const [meals, setMeals] = useState({});
   const [mealType, setMealType] = useState(1);
   const [mealQuantity, setMealQuantity] = useState(1);
+  const [currentUser, toast] = useOutletContext();
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -24,6 +25,7 @@ const MealBookingPage = () => {
         }
       } catch (error) {
         console.error(error.message);
+        toast('Something Went Wrong!');
       }
       setLoading(false);
     };
@@ -38,7 +40,7 @@ const MealBookingPage = () => {
         const response = await axios.post(`/book-meal/`, {
           id: mealType,
           quantity: mealQuantity,
-          user: 'rh346685@dal.ca',
+          user: currentUser,
         });
         if (response.status === 200) {
           toast(response.data.message);
@@ -123,7 +125,6 @@ const MealBookingPage = () => {
               </tbody>
             </Table>
           </Container>
-          <ToastContainer />
         </div>
       )}
     </>

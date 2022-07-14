@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDaAPyPstHvaxP1f9OBOtQCXtBbhjzdqvc',
@@ -16,7 +16,7 @@ initializeApp(firebaseConfig);
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const messaging = getMessaging(firebaseApp);
-
+const currentUser = 'rh346685@dal.ca';
 export const fetchToken = (setTokenFound) => {
   return getToken(messaging, {
     vapidKey:
@@ -24,21 +24,27 @@ export const fetchToken = (setTokenFound) => {
   })
     .then(async (currentToken) => {
       if (currentToken) {
-        console.log('current token for client: ', currentToken);
         setTokenFound(true);
-        const ref = doc(db, 'tokens', 'rh346685@dal.ca');
-        await setDoc(ref, { token: currentToken });
+        const ref = doc(db, 'notifications', currentUser);
+        const docSnap = await getDoc(ref);
+        if (docSnap.exists()) {
+          await setDoc(ref, { token: currentToken }, { merge: true });
+        } else {
+          await setDoc(ref, {
+            token: currentToken,
+            notifications: [],
+            invoices: [],
+          });
+        }
       } else {
         console.log(
           'No registration token available. Request permission to generate one.'
         );
         setTokenFound(false);
-        // shows on the UI that permission is required
       }
     })
     .catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
-      // catch error while creating client token
     });
 };
 

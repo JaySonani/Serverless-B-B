@@ -58,6 +58,26 @@ paths:
           description: "Server Error"
           schema:
             type: string
+  /get-notifications:
+    get:
+      description: 'get-notifications'
+      operationId: 'get-notifications'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-notifications
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
   /book-meal:
     post:
       description: "book-meal"
@@ -127,5 +147,33 @@ paths:
             type: string
         "500":
           description: "Server Error"
+          schema:
+            type: string
+  /book-tour:
+    post:
+      description: 'book-tour'
+      operationId: 'book-tour'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+              quantity:
+                type: number
+              user:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/book-tour
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
           schema:
             type: string

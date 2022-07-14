@@ -13,7 +13,7 @@ exports.main = async (event) => {
     console.log(messageObject);
 
     const registrationToken = (
-      await db.collection('tokens').doc(messageObject.customer_id).get()
+      await db.collection('notifications').doc(messageObject.customer_id).get()
     ).data().token;
 
     const message = {
