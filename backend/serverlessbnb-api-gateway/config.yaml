@@ -86,3 +86,105 @@ paths:
           description: 'Server Error'
           schema:
             type: string
+  /store-security-question:
+    options:
+      operationId: 'store-security-question-cors'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/store-security-question
+      responses:
+        '200':
+          description: 'Success'
+    post:
+      description: 'store-security-question'
+      operationId: 'store-security-question'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              question:
+                type: string
+              answer:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/store-security-question
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
+  /validate-security-question-answer:
+    options:
+      operationId: 'validate-security-question-answer-cors'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/validate-security-question-answer
+      responses:
+        '200':
+          description: 'Success'
+    post:
+      description: 'validate-security-question-answer'
+      operationId: 'validate-security-question-answer'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              answer:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/validate-security-question-answer
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
+  /get-security-question:
+    options:
+      operationId: 'get-security-question-cors'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-security-question
+      responses:
+        '200':
+          description: 'Success'
+    post:
+      description: 'get-security-question'
+      operationId: 'get-security-question'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-security-question
+      responses:
+        '200':
+          description: 'Success'
+          schema:
+            type: object
+            properties:
+              question:
+                type: string
+        '500':
+          description: 'Server Error'
+          schema:
+            type: string
