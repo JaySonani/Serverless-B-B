@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <Navbar sticky='top' collapseOnSelect expand='lg' bg='dark' variant='dark'>
+    <Navbar fixed='top' collapseOnSelect expand='lg' bg='dark' variant='dark'>
       <Container>
         <Navbar.Brand onClick={() => navigate('/')}>
           <ReactLogo style={{ width: '20vw', height: '10vh' }} />

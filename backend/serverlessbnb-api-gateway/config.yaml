@@ -1,5 +1,5 @@
 ---
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: serverlessbnb-api-gateway
   description: serverlessbnb-api-gateway
@@ -8,47 +8,67 @@ schemes:
   - https
 produces:
   - application/json
-host: 'serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog'
+host: "serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog"
 x-google-endpoints:
-  - name: 'serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog'
+  - name: "serverlessbnb-api-gateway-1o0i8v0cboftg.apigateway.serverlessbnb-354422.cloud.goog"
     allowCors: True
 paths:
   /get-meals:
     get:
-      description: 'get-meals'
-      operationId: 'get-meals'
+      description: "get-meals"
+      operationId: "get-meals"
       x-google-backend:
         address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-meals
       responses:
-        '200':
-          description: 'Success'
+        "200":
+          description: "Success"
           schema:
             type: string
-        '500':
-          description: 'Server Error'
+        "500":
+          description: "Server Error"
           schema:
             type: string
   /get-tours:
     get:
-      description: 'get-tours'
-      operationId: 'get-tours'
+      description: "get-tours"
+      operationId: "get-tours"
       x-google-backend:
         address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-tours
       responses:
-        '200':
-          description: 'Success'
+        "200":
+          description: "Success"
           schema:
             type: string
-        '500':
-          description: 'Server Error'
+        "500":
+          description: "Server Error"
           schema:
             type: string
   /get-rooms:
     get:
-      description: 'get-rooms'
-      operationId: 'get-rooms'
+      description: "get-rooms"
+      operationId: "get-rooms"
       x-google-backend:
         address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-rooms
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /get-notifications:
+    get:
+      description: 'get-notifications'
+      operationId: 'get-notifications'
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-notifications
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: string
       responses:
         '200':
           description: 'Success'
@@ -60,8 +80,8 @@ paths:
             type: string
   /book-meal:
     post:
-      description: 'book-meal'
-      operationId: 'book-meal'
+      description: "book-meal"
+      operationId: "book-meal"
       parameters:
         - in: body
           name: body
@@ -77,6 +97,77 @@ paths:
                 type: string
       x-google-backend:
         address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/book-meal
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /caesar-cipher:
+    post:
+      description: "caesar-cipher"
+      operationId: "caesar-cipher"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              cipher_text:
+                type: string
+              key:
+                type: number
+              answer:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/caesar-cipher
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /security-question:
+    get:
+      description: "security-question"
+      operationId: "security-question"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/security-question
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /book-tour:
+    post:
+      description: 'book-tour'
+      operationId: 'book-tour'
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: number
+              quantity:
+                type: number
+              user:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/book-tour
       responses:
         '200':
           description: 'Success'

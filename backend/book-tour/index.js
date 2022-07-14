@@ -24,16 +24,16 @@ exports.main = async (req, res) => {
   );
   try {
     const ref = db
-      .collection('meal_availability')
+      .collection('tour_availability')
       .doc(new Date().toISOString().split('T')[0]);
     let flag = false;
     let availability = (await ref.get()).data().availability;
     availability.find((a) => {
-      if (a.meal_id === +req.body.id) {
+      if (a.tour_id === +req.body.id) {
         if (a.available_qty < req.body.quantity) {
           res.status(200).json({
             success: false,
-            message: `Insufficent Quantity, Available:${a.available_qty}`,
+            message: `Insufficent Slots, Available:${a.available_qty}`,
           });
         } else {
           a.available_qty = a.available_qty - req.body.quantity;
@@ -46,23 +46,23 @@ exports.main = async (req, res) => {
         customer_id: req.body.user,
         date: new Date().toISOString().split('T')[0],
         status: 'Placed',
-        meal_id: +req.body.id,
-        meal_qty: +req.body.quantity,
+        tour_id: +req.body.id,
+        tour_qty: +req.body.quantity,
       };
-      const response = await db.collection('meal_booking').add(orderObj);
+      const response = await db.collection('tour_booking').add(orderObj);
       await ref.update({ availability: availability });
       orderObj.order_id = response.id;
       const notificationRef = db.collection('notifications').doc(req.body.user);
       let notifications = (await notificationRef.get()).data().notifications;
       notifications.unshift({
-        message: `Meal Order Placed, Order ID: ${response.id}`,
+        message: `Tour Order Placed, Order ID: ${response.id}`,
         timestamp: new Date().toUTCString(),
       });
       await notificationRef.update({ notifications: notifications });
-      await publishMessage(pubSubClient, 'meal_order', orderObj);
+      await publishMessage(pubSubClient, 'tour_order', orderObj);
       res.status(200).json({
         success: true,
-        message: `Meal Order Placed, Order ID: ${response.id}`,
+        message: `Tour Order Placed, Order ID: ${response.id}`,
       });
     }
     res.status(200).json({ success: false, message: 'Something Went Wrong!' });
