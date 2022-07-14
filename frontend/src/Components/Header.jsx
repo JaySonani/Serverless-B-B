@@ -19,8 +19,8 @@ const Header = () => {
             <Nav.Link onClick={() => navigate('/tours')}>Tours</Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link href='#deets'>Login / Register</Nav.Link>
-            <Nav.Link href='#deets'>My Profile</Nav.Link>
+            <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link>
+            <Nav.Link onClick={() => navigate('/login')}>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
