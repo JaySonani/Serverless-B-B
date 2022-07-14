@@ -7,14 +7,9 @@ const db = admin.firestore();
 
 exports.main = async (req, res) => {
   try {
-    const tourSnapshot = await db.collection('tours').get();
-    const tours = [];
-    tourSnapshot.forEach((doc) => {
-      tours.push({
-        id: doc.id,
-        data: doc.data(),
-      });
-    });
+    const data = (
+      await db.collection('notifications').doc(req.query.id).get()
+    ).data();
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Max-Age', '1800');
@@ -23,7 +18,9 @@ exports.main = async (req, res) => {
       'Access-Control-Allow-Methods',
       'PUT, POST, GET, DELETE, PATCH, OPTIONS'
     );
-    res.status(200).json(tours);
+    res
+      .status(200)
+      .json({ notifications: data.notifications, invoices: data.invoices });
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
