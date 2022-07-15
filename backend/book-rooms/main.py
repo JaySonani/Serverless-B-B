@@ -18,7 +18,7 @@ def main(request):
     })
     
     db = firestore.client()
-    booked_rooms = db.collection('booked_rooms')
+    booked_rooms = db.collection('room_booking')
 
     booking = {}
     doc_ref = booked_rooms.document(user_id)
