@@ -14,7 +14,7 @@ def main(request):
     })
     
     db = firestore.client()
-    available_rooms = db.collection('available_rooms')
+    available_rooms = db.collection('room_availability')
 
     response = {}
 
