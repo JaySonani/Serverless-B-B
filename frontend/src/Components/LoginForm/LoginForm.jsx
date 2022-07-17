@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Form, Spinner, Container, Alert } from 'react-bootstrap';
 import { authenticateUser } from '../../Services/AuthService';
 import axios from '../../Config/AxiosConfig';
+import CaesarCipherPage from '../../Pages/CaesarCipherPage';
 
 const FormModes = Object.freeze({
   Login: Symbol('login'),
@@ -119,9 +120,10 @@ class LoginForm extends React.Component {
     if (this.state.formMode === FormModes.Success) {
       return (
         <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Alert variant="success">
+          {/* <Alert variant="success">
             You have successfully logged in.
-          </Alert>
+          </Alert> */}
+          <CaesarCipherPage />
         </Container>
       )
     }
