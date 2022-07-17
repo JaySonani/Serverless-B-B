@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Spinner, Container, Alert } from 'react-bootstrap';
-import { registerUser, validateEmailOTP } from '../../Services/AuthService';
+import { isUserSessionActive, registerUser, validateEmailOTP } from '../../Services/AuthService';
 import axios from '../../Config/AxiosConfig';
 import { Navigate } from 'react-router-dom';
 
@@ -50,6 +50,12 @@ class RegisterForm extends React.Component {
       loading: false,
       redirectToLogin: false
     };
+  }
+
+  componentDidMount() {
+    isUserSessionActive()
+      .then(() => this.setState({ redirectToLogin: true }))
+      .catch((ignored) => {});
   }
 
   handleRegisterSubmit = async (event) => {
@@ -231,7 +237,7 @@ class RegisterForm extends React.Component {
 
     if (this.state.formMode === FormModes.Success) {
       return (
-        <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <Alert variant="success">
             Your account has been created successfully. Please <Alert.Link onClick={this.redirectUserToLogin}>Log In</Alert.Link> to start using our services!
           </Alert>
@@ -241,7 +247,7 @@ class RegisterForm extends React.Component {
 
     if (this.state.formMode === FormModes.SecurityQuestion) {
       return (
-        <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h1>Security Questions</h1>
           <p>Please select a security question for your account</p>
           <Container style={{ width: '50%', textAlign: 'left' }}>
@@ -303,7 +309,7 @@ class RegisterForm extends React.Component {
     // verify OTP form UI
     if (this.state.formMode === FormModes.OtpVerification) {
       return (
-        <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h1>Account Verification</h1>
           <Container style={{ width: '50%', textAlign: 'left' }}>
             <p>An OTP has been sent to your email: {this.state.registrationValues.email}</p>
@@ -358,7 +364,7 @@ class RegisterForm extends React.Component {
 
     // registration form UI
     return (
-      <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <h1>Register</h1>
         <Container style={{ width: '50%', textAlign: 'left' }}>
           <Form method='POST' onSubmit={this.handleRegisterSubmit} style={{ marginTop: '32px' }}>
