@@ -4,17 +4,24 @@ import MealBookingPage from "../Pages/MealBookingPage";
 import LandingPage from "../Pages/LandingPage";
 import RoomBookingPage from "../Pages/RoomBookingPage";
 import TourBookingPage from "../Pages/TourBookingPage";
+import OutletPage from "../Pages/OutletPage";
+import RegisterPage from "../Pages/RegisterPage";
+import LoginPage from "../Pages/LoginPage";
 import Review from "../Pages/Review";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/meals" element={<MealBookingPage />} />
-        <Route path="/rooms" element={<RoomBookingPage />} />
-        <Route path="/tours" element={<TourBookingPage />} />
-        <Route path="/review" element={<Review />} />
+        <Route path="/" element={<OutletPage />}>
+          <Route index element={<LandingPage />} />
+          <Route path="/meals" element={<MealBookingPage />} />
+          <Route path="/rooms" element={<RoomBookingPage />} />
+          <Route path="/tours" element={<TourBookingPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/review" element={<Review />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

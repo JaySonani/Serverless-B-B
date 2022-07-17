@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 import axios from "../Config/AxiosConfig";
 import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 const axioss = require("axios");
 
 const TourBookingPage = () => {
@@ -19,6 +20,9 @@ const TourBookingPage = () => {
   const handleDurationChange = (event) => {
     setDuration(event.target.value);
   };
+  const [tourType, setTourType] = useState(1);
+  const [tourQuantity, setTourQuantity] = useState(1);
+  const [currentUser, toast] = useOutletContext();
 
   useEffect(() => {
     const fetchTours = async () => {
@@ -30,6 +34,7 @@ const TourBookingPage = () => {
         }
       } catch (error) {
         console.error(error.message);
+        toast("Something Went Wrong!");
       }
       setLoading(false);
     };
@@ -85,9 +90,30 @@ const TourBookingPage = () => {
     setPtours(tourTypess[output]);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (tourQuantity > 0) {
+        const response = await axios.post(`/book-tour/`, {
+          id: tourType,
+          quantity: tourQuantity,
+          user: currentUser,
+        });
+        if (response.status === 200) {
+          toast(response.data.message);
+          setTourType(1);
+          setTourQuantity(1);
+        }
+      } else {
+        toast("No of people can only be 1 or more");
+        setTourQuantity(1);
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   return (
     <>
-      <Header />
       {loading && <h1>Loading...</h1>}
       {!loading && (
         <div style={{ display: "flex", margin: "5vh" }}>
@@ -125,7 +151,10 @@ const TourBookingPage = () => {
             <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput">
                 <FloatingLabel controlId="floatingSelectGrid" label="Tour Type">
-                  <Form.Select>
+                  <Form.Select
+                    value={tourType}
+                    onChange={(e) => setTourType(e.target.value)}
+                  >
                     {tours.map((tour, index) => {
                       return (
                         <option key={index} value={tour.id}>
@@ -141,11 +170,21 @@ const TourBookingPage = () => {
                   controlId="floatingInputGrid"
                   label="No. of People"
                 >
-                  <Form.Control type="number" placeholder="1" />
+                  <Form.Control
+                    type="number"
+                    min="1"
+                    value={tourQuantity}
+                    onChange={(e) => setTourQuantity(e.target.value)}
+                  />
                 </FloatingLabel>
               </Form.Group>
               <div className="d-grid" style={{ margin: "2vh 0vh" }}>
-                <Button variant="dark" size="lg" type="submit">
+                <Button
+                  variant="dark"
+                  size="lg"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Submit
                 </Button>
               </div>
@@ -176,7 +215,6 @@ const TourBookingPage = () => {
           </Container>
         </div>
       )}
-      <Footer />
     </>
   );
 };

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <Navbar sticky="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
         <Navbar.Brand onClick={() => navigate("/")}>
           <ReactLogo style={{ width: "20vw", height: "10vh" }} />
@@ -20,8 +20,8 @@ const Header = () => {
             <Nav.Link onClick={() => navigate("/review")}>Review</Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">Login / Register</Nav.Link>
-            <Nav.Link href="#deets">My Profile</Nav.Link>
+            <Nav.Link onClick={() => navigate("/register")}>Register</Nav.Link>
+            <Nav.Link onClick={() => navigate("/login")}>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

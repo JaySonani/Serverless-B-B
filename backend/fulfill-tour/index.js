@@ -23,34 +23,34 @@ exports.main = async (req, res) => {
     'PUT, POST, GET, DELETE, PATCH, OPTIONS'
   );
   try {
-    const subscription = pubSubClient.subscription('meal_order_sub');
+    const subscription = pubSubClient.subscription('tour_order_sub');
     const messageHandler = async (message) => {
       let messageReceived = JSON.parse(message.data);
       message.ack();
       await db
-        .collection('meal_booking')
+        .collection('tour_booking')
         .doc(messageReceived.order_id)
         .update({ status: 'Delivered' });
       const price = (
         await db
-          .collection('meals')
-          .doc(messageReceived.meal_id.toString())
+          .collection('tours')
+          .doc(messageReceived.tour_id.toString())
           .get()
-      ).data().meal_price;
+      ).data().tour_price;
       await db
         .collection('notifications')
         .doc(messageReceived.customer_id)
         .update({
           invoices: admin.firestore.FieldValue.arrayUnion({
             order_id: messageReceived.order_id,
-            order_type: 'Meal',
+            order_type: 'Tour',
             status: 'Unpaid',
-            amount: price * messageReceived.meal_qty,
+            amount: price * messageReceived.tour_qty,
           }),
         });
       await publishMessage(pubSubClient, 'notifications', {
         customer_id: messageReceived.customer_id,
-        message: `Meal Order Delivered & Invoice Generated, Order ID: ${messageReceived.order_id}`,
+        message: `Tour Order Fulfilled & Invoice Generated, Order ID: ${messageReceived.order_id}`,
       });
     };
 

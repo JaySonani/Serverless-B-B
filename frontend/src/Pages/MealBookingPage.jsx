@@ -1,22 +1,19 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Header from '../Components/Header';
-import Footer from '../Components/Footer';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
-import Notification from '../Components/Notification';
+import { useOutletContext } from 'react-router-dom';
 
 const MealBookingPage = () => {
   const [loading, setLoading] = useState(true);
   const [meals, setMeals] = useState({});
   const [mealType, setMealType] = useState(1);
   const [mealQuantity, setMealQuantity] = useState(1);
-  const [show, setShow] = useState(false);
-  const [message, setMessage] = useState('');
+  const [currentUser, toast] = useOutletContext();
 
   useEffect(() => {
     const fetchMeals = async () => {
@@ -28,6 +25,7 @@ const MealBookingPage = () => {
         }
       } catch (error) {
         console.error(error.message);
+        toast('Something Went Wrong!');
       }
       setLoading(false);
     };
@@ -42,18 +40,16 @@ const MealBookingPage = () => {
         const response = await axios.post(`/book-meal/`, {
           id: mealType,
           quantity: mealQuantity,
-          user: 'rh346685@dal.ca',
+          user: currentUser,
         });
         if (response.status === 200) {
-          setMessage(response.data.message);
+          toast(response.data.message);
           setMealType(1);
           setMealQuantity(1);
-          setShow(true);
         }
       } else {
-        setMessage('Quantity can be 1 or more');
+        toast('Quantity can only be 1 or more');
         setMealQuantity(1);
-        setShow(true);
       }
     } catch (error) {
       console.error(error.message);
@@ -62,7 +58,6 @@ const MealBookingPage = () => {
 
   return (
     <>
-      <Header />
       {loading && <h1>Loading...</h1>}
       {!loading && (
         <div style={{ display: 'flex', margin: '5vh' }}>
@@ -132,8 +127,6 @@ const MealBookingPage = () => {
           </Container>
         </div>
       )}
-      <Notification show={show} setShow={setShow} message={message} />
-      <Footer />
     </>
   );
 };
