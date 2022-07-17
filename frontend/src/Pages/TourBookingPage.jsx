@@ -71,7 +71,7 @@ const TourBookingPage = () => {
     };
 
     const Bearer_token =
-      "ya29.A0AVA9y1tPcfc8LqkxoMbx04serskp1vwaT6ttBDQq8CCrpq4GW0UUAUWicvruJfBZrxnNHuJCfDLVhvY9bOkgRy4CIE3NyV71rtWSxNSCahEL0-MKdA-_mbre-8TGxJrUkjIIMKKV0sTHn-WwiadKA9NcyLtzUKgVQX1LHigYUNnWUtBVEFTQVRBU0ZRRTY1ZHI4SG1HdnBVbllEeUQ4RmtnZEYzTkhQUQ0174";
+      "ya29.A0AVA9y1vF_AxXEvwSJTAsc3PX3dx0n7bMVvmw2x1jqYqDmQ0tnW7l-LQ_Q-78E8XVTmBmavshYUZiIU9Vo3H9AS3Vs1LLAjtMUUHEonW7umo8MYhuLhYNkQ7-Uw4uATvdgW0fwh4ZwUEIUbpyMP2WX8SL6LvVssmQd-yNy7IYUNnWUtBVEFTQVRBU0ZRRTY1ZHI4X2YxYkZCS2N3MzNzZ0lwckFsam1HUQ0174";
     const ProjectId = "ml-learning-352715";
     const EndpointId = "8254772661528297472";
 
