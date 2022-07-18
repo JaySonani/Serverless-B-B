@@ -48,24 +48,28 @@ const TourBookingPage = () => {
     ProjectId,
     EndpointId
   ) => {
-    const res = await axioss.post(
-      "https://us-central1-aiplatform.googleapis.com/v1/projects/" +
-        ProjectId +
-        "/locations/us-central1/endpoints/" +
-        EndpointId +
-        ":predict",
-      { instances: { duration: duration } },
-      {
-        headers: {
-          Authorization: "Bearer " + Bearer_token,
-          "content-type": "application/json",
-        },
-      }
-    );
-    const maxi = await Math.max(...res.data.predictions[0].scores);
-    const ind = await res.data.predictions[0].scores.indexOf(maxi);
-    //console.log(res.data.predictions[0].classes[ind]);
-    return res.data.predictions[0].classes[ind];
+    try {
+      const res = await axioss.post(
+        "https://us-central1-aiplatform.googleapis.com/v1/projects/" +
+          ProjectId +
+          "/locations/us-central1/endpoints/" +
+          EndpointId +
+          ":predict",
+        { instances: { duration: duration } },
+        {
+          headers: {
+            Authorization: "Bearer " + Bearer_token,
+            "content-type": "application/json",
+          },
+        }
+      );
+      const maxi = await Math.max(...res.data.predictions[0].scores);
+      const ind = await res.data.predictions[0].scores.indexOf(maxi);
+      //console.log(res.data.predictions[0].classes[ind]);
+      return res.data.predictions[0].classes[ind];
+    } catch (e) {
+      return 1;
+    }
   };
 
   const predictTour = async () => {
@@ -76,7 +80,7 @@ const TourBookingPage = () => {
     };
 
     const Bearer_token =
-      "ya29.A0AVA9y1vF_AxXEvwSJTAsc3PX3dx0n7bMVvmw2x1jqYqDmQ0tnW7l-LQ_Q-78E8XVTmBmavshYUZiIU9Vo3H9AS3Vs1LLAjtMUUHEonW7umo8MYhuLhYNkQ7-Uw4uATvdgW0fwh4ZwUEIUbpyMP2WX8SL6LvVssmQd-yNy7IYUNnWUtBVEFTQVRBU0ZRRTY1ZHI4X2YxYkZCS2N3MzNzZ0lwckFsam1HUQ0174";
+      "ya29.A0AVA9y1tS72A5SM9ablP3t_NqELblV91XJsUWEx6bhEOLnq3fFntMaZT5VEN-paQ0mo7xhzoRyfsZNdggtsFFj5bVOyAPOq6J6aRxXv2v89glzDySuts39JyV-__2IdXR3ORb09c2hF6kWXnSixgWrct6cBAIDTsWtrwLCK0YUNnWUtBVEFTQVRBU0ZRRTY1ZHI4YUdxM1F1aDJlSkMyUXhzUTFzaWNmdw0174";
     const ProjectId = "ml-learning-352715";
     const EndpointId = "8254772661528297472";
 
