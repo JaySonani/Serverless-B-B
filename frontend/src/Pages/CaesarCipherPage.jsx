@@ -4,25 +4,24 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
-import { Row, Col, Alert, Spinner } from 'react-bootstrap';
+import { Row, Col, Spinner } from 'react-bootstrap';
+import RoomBookingPage from './RoomBookingPage';
 
-const LoginPage = () => {
+const LoginPage = (props) => {
 
   const [loading, setLoading] = useState(false);
-  const [plainTextAndKey, setPlainTextAndKey] = useState([]);
+  const [plainText, setPlainText] = useState("");
   const [success, setSuccess] = useState(false);
 
   const handleCaesarCipher = async (event) => {
     setLoading(true);
     event.preventDefault();
-
     const cipherTextInput = event.target.cipherText.value;
-
     try {
       const response = await axios.post(`/caesar-cipher/`, {
-        cipher_text: plainTextAndKey[0],
-        key: plainTextAndKey[1],
-        answer: cipherTextInput,
+        plain_text: plainText,
+        user_id: props.userId,
+        cipher_text: cipherTextInput,
       });
       if (response.status === 200) {
         console.log(response.data);
@@ -31,8 +30,6 @@ const LoginPage = () => {
     } catch (error) {
       console.error(error.message);
     }
-
-
   }
 
   //https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
@@ -45,41 +42,23 @@ const LoginPage = () => {
     return result;
   }
 
-  //https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
-  const generateKey = () => {
-    return Math.floor(Math.random() * 9) + 1;
-  }
-
   useEffect(() => {
-    let textAndKey = [];
     const plainText = generatePlainText();
-    const key = generateKey();
-    textAndKey.push(plainText);
-    textAndKey.push(key);
-    setPlainTextAndKey(textAndKey);
+    setPlainText(plainText);
   }, []);
 
   return !success ? (
     <>
       <div style={{ display: 'flex', margin: '5vh' }}>
         <Container>
-          <h2>Are you Human? Solve this Caesar cipher!</h2>
+          <h2>Solve this Caesar cipher with your Key!</h2>
           <Form method='POST' onSubmit={(event) => handleCaesarCipher(event)}>
             <Form.Group as={Row} className="mb-3" controlId="plainText">
               <Form.Label column sm="3">
                 Plain Text
               </Form.Label>
               <Col sm="9">
-                <Form.Control plaintext readOnly defaultValue={plainTextAndKey[0]} />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="key">
-              <Form.Label column sm="3">
-                Key
-              </Form.Label>
-              <Col sm="9">
-                <Form.Control plaintext readOnly defaultValue={plainTextAndKey[1]} />
+                <Form.Control plaintext readOnly defaultValue={plainText} />
               </Col>
             </Form.Group>
 
@@ -111,11 +90,7 @@ const LoginPage = () => {
       </div>
     </>
   ) : (
-    <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <Alert variant="success">
-        You have successfully logged in.
-      </Alert>
-    </Container>
+    <RoomBookingPage />
   );
 };
 

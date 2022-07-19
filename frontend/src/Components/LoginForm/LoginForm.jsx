@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Spinner, Container, Alert } from 'react-bootstrap';
+import { Button, Form, Spinner, Container } from 'react-bootstrap';
 import { authenticateUser, isUserSessionActive, userLogInEvent } from '../../Services/AuthService';
 import axios from '../../Config/AxiosConfig';
 import CaesarCipherPage from '../../Pages/CaesarCipherPage';
@@ -131,12 +131,10 @@ class LoginForm extends React.Component {
     } = this.state.loginFormErrors;
 
     if (this.state.formMode === FormModes.Success) {
+      const { email } = this.state;
       return (
         <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          {/* <Alert variant="success">
-            You have successfully logged in.
-          </Alert> */}
-          <CaesarCipherPage />
+          <CaesarCipherPage  userId={email} />
         </Container>
       )
     }
