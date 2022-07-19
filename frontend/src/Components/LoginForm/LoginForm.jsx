@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Spinner, Container, Alert } from 'react-bootstrap';
-import { authenticateUser } from '../../Services/AuthService';
+import { authenticateUser, isUserSessionActive, userLogInEvent } from '../../Services/AuthService';
 import axios from '../../Config/AxiosConfig';
 
 const FormModes = Object.freeze({
@@ -24,6 +24,14 @@ class LoginForm extends React.Component {
       securityQuestionError: '',
       loading: false
     };
+  }
+
+  componentDidMount() {
+    isUserSessionActive()
+      .then(() => this.setState({
+        formMode: FormModes.Success
+      }))
+      .catch(() => {});
   }
 
   handleLoginSubmit = async (event) => {
@@ -57,7 +65,7 @@ class LoginForm extends React.Component {
     }
 
     try {
-      const token = await authenticateUser(email, password);
+      await authenticateUser(email, password);
       const questionResponse = await axios.post('/get-security-question', { email });
 
       this.setState({
@@ -92,12 +100,17 @@ class LoginForm extends React.Component {
     }
 
     try {
-      const response = await axios.post('/validate-security-question-answer', {
+      await axios.post('/validate-security-question-answer', {
         email: this.state.email,
         answer
       });
 
-      console.log(response);
+      localStorage.setItem('security-question-answer-status', 'answered');
+      await axios.post('/set-user-status', {
+        email: this.state.email,
+        status: true
+      });
+      document.dispatchEvent(userLogInEvent);
       this.setState({
         formMode: FormModes.Success
       });
@@ -118,7 +131,7 @@ class LoginForm extends React.Component {
 
     if (this.state.formMode === FormModes.Success) {
       return (
-        <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <Alert variant="success">
             You have successfully logged in.
           </Alert>
@@ -128,7 +141,7 @@ class LoginForm extends React.Component {
 
     if (this.state.formMode === FormModes.SecurityQuestion) {
       return (
-        <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <h1>Answer your security question</h1>
           <p>{this.state.securityQuestion}</p>
           <Container style={{ width: '50%', textAlign: 'left' }}>
@@ -171,7 +184,7 @@ class LoginForm extends React.Component {
 
     // login form UI
     return (
-      <Container style={{ margin: '32px', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <Container style={{ margin: '32px auto', display: 'flex', flexFlow: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <h1>Login</h1>
         <Container style={{ width: '50%', textAlign: 'left' }}>
           <Form method='POST' onSubmit={this.handleLoginSubmit} style={{ marginTop: '32px' }}>

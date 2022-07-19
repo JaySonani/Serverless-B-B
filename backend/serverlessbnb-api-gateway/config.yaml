@@ -335,3 +335,68 @@ paths:
           description: "Server Error"
           schema:
             type: string
+  /get-user-status:
+    options:
+      operationId: "get-user-status-cors"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-user-status
+      responses:
+        "200":
+          description: "Success"
+    post:
+      description: "get-user-status"
+      operationId: "get-user-status"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-user-status
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: object
+            properties:
+              status:
+                type: boolean
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /set-user-status:
+    options:
+      operationId: "set-user-status-cors"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/set-user-status
+      responses:
+        "200":
+          description: "Success"
+    post:
+      description: "set-user-status"
+      operationId: "set-user-status"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              status:
+                type: boolean
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/set-user-status
+      responses:
+        "200":
+          description: "Success"
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
