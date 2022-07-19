@@ -78,7 +78,7 @@ const TourBookingPage = () => {
       1: "WildLife",
       2: "Nature",
     };
-
+    //You must require Bearer_token for the model
     const Bearer_token =
       "ya29.A0AVA9y1tS72A5SM9ablP3t_NqELblV91XJsUWEx6bhEOLnq3fFntMaZT5VEN-paQ0mo7xhzoRyfsZNdggtsFFj5bVOyAPOq6J6aRxXv2v89glzDySuts39JyV-__2IdXR3ORb09c2hF6kWXnSixgWrct6cBAIDTsWtrwLCK0YUNnWUtBVEFTQVRBU0ZRRTY1ZHI4YUdxM1F1aDJlSkMyUXhzUTFzaWNmdw0174";
     const ProjectId = "ml-learning-352715";

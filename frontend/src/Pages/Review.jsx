@@ -73,7 +73,7 @@ const Review = () => {
       return "0";
     }
   };
-
+  //You must require Bearer_token for the model
   const predictSentiment = async () => {
     //predicting sentiment
     const Bearer_token =
