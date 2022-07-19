@@ -92,6 +92,30 @@ def main(request):
             "success": True,
             "booking_details": booking[room_type]
         }
+        # push the notific
+        print("------PUSHING NOTIFICATION-------")
+        notific_ref = db.collection('notifications').document(user_id)
+        if(notific_ref.get().exists):
+          notific_ref.update({
+            u'invoices': firestore.ArrayUnion([{
+              "room_type": room_type,
+              "stay_length": len(all_dates),
+              "status": "confirmed"
+            }])
+          })
+          notific_ref.update({
+            u'notifications': firestore.ArrayUnion([{
+              "message": "Stay booked successfully. Booking ID: " + user_id,
+              "timestamp": str(datetime.now())
+            }])
+          })
+        else:
+          print("NOTIFICATION PUSHING FAILED. USER'S DOCUMENT NOT FOUND")
+
+
+      
+
+        # 
     else:    
       final_response = {
         "message": "Not enough rooms available",
