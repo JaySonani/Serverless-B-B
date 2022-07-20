@@ -1,16 +1,7 @@
 import React from 'react';
-// import Footer from '../Components/Footer';
-import Header from '../Components/Header';
-import LoginForm from '../Components/LoginForm/LoginForm';
-
+import LoginForm from '../Components/LoginForm';
 const LoginPage = () => {
-  return (
-    <>
-      {/* <Header /> */}
-      <LoginForm />
-      {/* <Footer /> */}
-    </>
-  );
+  return <LoginForm />;
 };
 
 export default LoginPage;
