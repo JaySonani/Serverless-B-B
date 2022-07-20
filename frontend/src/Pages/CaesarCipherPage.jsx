@@ -5,13 +5,13 @@ import Container from 'react-bootstrap/Container';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
 import { Row, Col, Spinner } from 'react-bootstrap';
-import RoomBookingPage from './RoomBookingPage';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = (props) => {
 
   const [loading, setLoading] = useState(false);
   const [plainText, setPlainText] = useState("");
-  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleCaesarCipher = async (event) => {
     setLoading(true);
@@ -24,8 +24,9 @@ const LoginPage = (props) => {
         cipher_text: cipherTextInput,
       });
       if (response.status === 200) {
-        console.log(response.data);
-        setSuccess(true);
+        if(response.data.success) {
+          navigate('/rooms', {state: {userId: props.userId}});
+        }
       }
     } catch (error) {
       console.error(error.message);
@@ -47,51 +48,47 @@ const LoginPage = (props) => {
     setPlainText(plainText);
   }, []);
 
-  return !success ? (
-    <>
-      <div style={{ display: 'flex', margin: '5vh' }}>
-        <Container>
-          <h2>Solve this Caesar cipher with your Key!</h2>
-          <Form method='POST' onSubmit={(event) => handleCaesarCipher(event)}>
-            <Form.Group as={Row} className="mb-3" controlId="plainText">
-              <Form.Label column sm="3">
-                Plain Text
-              </Form.Label>
-              <Col sm="9">
-                <Form.Control plaintext readOnly defaultValue={plainText} />
-              </Col>
-            </Form.Group>
+  return (
+    <div style={{ display: 'flex', margin: '5vh' }}>
+    <Container>
+      <h2>Solve this Caesar cipher with your Key!</h2>
+      <Form method='POST' onSubmit={(event) => handleCaesarCipher(event)}>
+        <Form.Group as={Row} className="mb-3" controlId="plainText">
+          <Form.Label column sm="3">
+            Plain Text
+          </Form.Label>
+          <Col sm="9">
+            <Form.Control plaintext readOnly defaultValue={plainText} />
+          </Col>
+        </Form.Group>
 
-            <Form.Group as={Row} className="mb-3" controlId="cipherText">
-              <Form.Label column sm="3">
-                Cipher Text
-              </Form.Label>
-              <Col sm="9">
-                <Form.Control type="text" name="cipherText" />
-              </Col>
-            </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="cipherText">
+          <Form.Label column sm="3">
+            Cipher Text
+          </Form.Label>
+          <Col sm="9">
+            <Form.Control type="text" name="cipherText" />
+          </Col>
+        </Form.Group>
 
-            <div className='d-grid' style={{ margin: '2vh 0vh' }}>
-              <Button variant='dark' size='lg' type='submit' disabled={loading}>
-                <Spinner
-                    hidden={!loading}
-                    animation="grow"
-                    as="span"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    style={{ marginRight: '8px' }}
-                  />
-                  Submit
-              </Button>
-            </div>
-          </Form>
-        </Container>
-      </div>
-    </>
-  ) : (
-    <RoomBookingPage />
-  );
+        <div className='d-grid' style={{ margin: '2vh 0vh' }}>
+          <Button variant='dark' size='lg' type='submit' disabled={loading}>
+            <Spinner
+                hidden={!loading}
+                animation="grow"
+                as="span"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                style={{ marginRight: '8px' }}
+              />
+              Submit
+          </Button>
+        </div>
+      </Form>
+    </Container>
+  </div>
+  )
 };
 
 export default LoginPage;
