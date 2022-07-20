@@ -8,6 +8,7 @@ import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { MDBContainer } from 'mdbreact';
+import Spinner from 'react-bootstrap/Spinner';
 const axioss = require('axios');
 
 const ReviewPage = () => {
@@ -97,7 +98,7 @@ const ReviewPage = () => {
 
   return (
     <>
-      {loading && <h1>Loading...</h1>}
+      {loading && <Spinner animation='border' variant='dark' />}
       {!loading && (
         <div style={{ display: 'flex', margin: '5vh' }}>
           <Container>

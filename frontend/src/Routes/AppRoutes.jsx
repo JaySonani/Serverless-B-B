@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import MealBookingPage from '../Pages/MealBookingPage';
-import LandingPage from '../Pages/LandingPage';
+import HomePage from '../Pages/HomePage';
 import RoomBookingPage from '../Pages/RoomBookingPage';
 import TourBookingPage from '../Pages/TourBookingPage';
 import OutletPage from '../Pages/OutletPage';
@@ -22,7 +22,7 @@ const AppRoutes = () => {
             path='/home'
             element={
               <ValidateUserSession>
-                <LandingPage />
+                <HomePage />
               </ValidateUserSession>
             }
           />

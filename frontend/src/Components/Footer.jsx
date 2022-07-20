@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Footer = () => {
   const navigate = useNavigate();
   return (
-    <Navbar fixed='bottom' bg='dark' variant='dark'>
+    <Navbar bg='dark' variant='dark'>
       <Container style={{ height: '30vh' }}>
         <Navbar.Brand onClick={() => navigate('/home')}>
           <ReactLogo style={{ width: '30vw', height: '15vh' }} />

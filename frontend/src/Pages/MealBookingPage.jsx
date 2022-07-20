@@ -7,6 +7,7 @@ import Table from 'react-bootstrap/Table';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 
 const MealBookingPage = () => {
   const [loading, setLoading] = useState(true);
@@ -58,7 +59,7 @@ const MealBookingPage = () => {
 
   return (
     <>
-      {loading && <h1>Loading...</h1>}
+      {loading && <Spinner animation='border' variant='dark' />}
       {!loading && (
         <div style={{ display: 'flex', margin: '5vh' }}>
           <Container>
