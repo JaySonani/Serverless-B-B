@@ -9,6 +9,7 @@ import RegisterPage from "../Pages/RegisterPage";
 import LoginPage from "../Pages/LoginPage";
 import ValidateUserSession from "../Components/ValidateUserSession";
 import Review from "../Pages/Review";
+import VisualizationsPage from "../Pages/VisualizationsPage";
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/review" element={<Review />} />
+          <Route path='/visualizations' element={<VisualizationsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
