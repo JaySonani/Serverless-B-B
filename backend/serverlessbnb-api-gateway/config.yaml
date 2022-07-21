@@ -134,6 +134,14 @@ paths:
           description: "Server Error"
           schema:
             type: string
+    options:
+      operationId: "caesar-cipher-options"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/caesar-cipher
+      responses:
+        "200":
+          description: A successful response
+          
   /security-question:
     get:
       description: "security-question"
@@ -303,6 +311,14 @@ paths:
           description: "Server Error"
           schema:
             type: string
+    options:
+      operationId: "book-available-rooms-options"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get-available-rooms
+      responses:
+        "200":
+          description: A successful response
+
   /book-rooms:
     post:
       description: "book-rooms"
@@ -335,6 +351,14 @@ paths:
           description: "Server Error"
           schema:
             type: string
+    options:
+      operationId: "book-rooms-options"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/book-rooms
+      responses:
+        "200":
+          description: A successful response
+
   /get-user-status:
     options:
       operationId: "get-user-status-cors"

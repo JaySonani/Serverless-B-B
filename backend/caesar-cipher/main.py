@@ -3,7 +3,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-alphabet = string.ascii_lowercase
+alphabet = string.ascii_lowercase.upper()
 
 def main(request):
     headers = {
@@ -22,7 +22,7 @@ def main(request):
     request_json = request.get_json()
 
     cipher_text = request_json['cipher_text']
-    plain_text = request_json['plain_text']
+    plain_text = request_json['plain_text'].upper()
     user_id = request_json['user_id']
     key = None
 
@@ -56,7 +56,7 @@ def main(request):
             enc_text += enc_character
         else:
             enc_text += character
-    success = cipher_text == enc_text
+    success = cipher_text.lower() == enc_text.lower()
 
     resp = {
         "cipher_text": enc_text,
