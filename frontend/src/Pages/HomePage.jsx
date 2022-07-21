@@ -4,8 +4,9 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import axios from '../Config/AxiosConfig';
 import { useOutletContext } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 
-const LandingPage = () => {
+const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState({});
   const [invoices, setInvoices] = useState({});
@@ -41,11 +42,13 @@ const LandingPage = () => {
           </h1>
           <h2 style={{ marginBottom: '5vh' }}>Welcome to ServerlessB&B! 🏠</h2>
         </Container>
-        <Container style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-          <div>
-            <h2>Notifications</h2>
-            {loading && <h1>Loading...</h1>}
-            {!loading && (
+        {loading && <Spinner animation='border' variant='dark' />}
+        {!loading && (
+          <Container
+            style={{ display: 'flex', justifyContent: 'space-evenly' }}
+          >
+            <div>
+              <h2>Notifications</h2>
               <Table style={{ marginTop: '5vh' }}>
                 <thead>
                   <tr>
@@ -64,12 +67,9 @@ const LandingPage = () => {
                   })}
                 </tbody>
               </Table>
-            )}
-          </div>
-          <div>
-            <h2>Invoices</h2>
-            {loading && <h1>Loading...</h1>}
-            {!loading && (
+            </div>
+            <div>
+              <h2>Invoices</h2>
               <Table style={{ marginTop: '5vh' }}>
                 <thead>
                   <tr>
@@ -92,12 +92,12 @@ const LandingPage = () => {
                   })}
                 </tbody>
               </Table>
-            )}
-          </div>
-        </Container>
+            </div>
+          </Container>
+        )}
       </div>
     </>
   );
 };
 
-export default LandingPage;
+export default HomePage;
