@@ -4,18 +4,13 @@ import {
   CognitoUser,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
-import * as AWS from 'aws-sdk/global';
 import axios from '../Config/AxiosConfig';
 
 export const userLogInEvent = new Event('user-logged-in');
 const userLogOutEvent = new Event('user-logged-out');
-const userSessionRefreshEvent = new Event('user-session-refreshed');
 
-const COGNITO_REGION = process.env.REACT_APP_COGNITO_REGION;
-const IDENTITY_POOL_ID = process.env.REACT_APP_IDENTITY_POOL_ID;
 const USER_POOL_ID = process.env.REACT_APP_USER_POOL_ID;
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-const COGNITO_PROVIDER = `cognito-idp.${COGNITO_REGION}.amazonaws.com/${USER_POOL_ID}`;
 
 const poolData = {
   UserPoolId: USER_POOL_ID,
@@ -100,12 +95,9 @@ export const authenticateUser = (email, password) => {
     const cognitoUser = getCognitoUserFromEmail(email);
     cognitoUser.authenticateUser(authenticationDetails, {
       onFailure: (error) => reject(error),
-      onSuccess: (session) => {
+      onSuccess: () => {
         document.dispatchEvent(userLogInEvent);
-        const idToken = session.getIdToken().getJwtToken();
-        refreshSessionCredentialsInConfig(idToken)
-          .then(() => resolve(true))
-          .catch((error) => reject(error));
+        resolve(true);
       }
     });
   });
@@ -122,11 +114,7 @@ export const isUserSessionActive = () => {
           reject(error);
         }
 
-        const idToken = session.getIdToken().getJwtToken();
-
-        refreshSessionCredentialsInConfig(idToken)
-          .then(() => resolve(true))
-          .catch((error) => reject(error));
+        resolve(true);
       });
     } catch (error) {
       reject(error);
@@ -161,10 +149,7 @@ export const getCurrentUserAttributes = () => {
             userAttributes.set(Name, Value);
           }
 
-          const idToken = session.getIdToken().getJwtToken();
-          refreshSessionCredentialsInConfig(idToken)
-            .then(() => resolve(Object.fromEntries(userAttributes)))
-            .catch((error) => reject(error));
+          resolve(Object.fromEntries(userAttributes));
         });
       });
     } catch (error) {
@@ -194,7 +179,7 @@ export const logoutUser = () => {
               email,
               status: false
             });
-            window.location = '/login';
+            window.location.assign('/login');
           },
           onFailure: (error) => {
             throw error;
@@ -205,26 +190,4 @@ export const logoutUser = () => {
   } catch (error) {
     console.error(error);
   }
-}
-
-const refreshSessionCredentialsInConfig = (idToken) => {
-  return new Promise((resolve, reject) => {
-    AWS.config.region = COGNITO_REGION;
-
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-      IdentityPoolId: IDENTITY_POOL_ID,
-      Logins: {
-        [COGNITO_PROVIDER]: idToken
-      }
-    });
-
-    AWS.config.credentials.refresh((error) => {
-      if (error) {
-        reject(error);
-      }
-
-      document.dispatchEvent(userSessionRefreshEvent);
-      resolve(true);
-    });
-  });
 }

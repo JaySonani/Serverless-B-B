@@ -51,7 +51,7 @@ const useAuthHook = () => {
               given_name: '',
               family_name: '',
               email_verified: false
-            })
+            });
 
             setFetchingUserDetails(false);
           });
@@ -59,6 +59,13 @@ const useAuthHook = () => {
       .catch(() => {
         setIsAuthenticated(false);
         setFetchingUserDetails(false);
+        setUserAttributes({
+          email: '',
+          given_name: '',
+          family_name: '',
+          email_verified: false
+        });
+        setIsSecurityQuestionAnswered(false);
       });
   }
 

@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formMode: FormModes.Registration,
+      formMode: FormModes.Login,
       email: '',
       loginFormErrors: {
         email: '',
