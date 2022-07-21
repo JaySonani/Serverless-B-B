@@ -22,6 +22,7 @@ const Header = () => {
             <Nav.Link onClick={() => navigate('/meals')}>Meals</Nav.Link>
             <Nav.Link onClick={() => navigate('/tours')}>Tours</Nav.Link>
             <Nav.Link onClick={() => navigate('/feedback')}>Feedback</Nav.Link>
+            <Nav.Link onClick={() => navigate("/visualizations")}>Visualizations</Nav.Link>
           </Nav>
           <Nav>
             {isAuthenticated ? (

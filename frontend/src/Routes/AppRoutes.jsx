@@ -9,6 +9,7 @@ import RegisterPage from '../Pages/RegisterPage';
 import LoginPage from '../Pages/LoginPage';
 import ValidateUserSession from '../Components/ValidateUserSession';
 import ReviewPage from '../Pages/ReviewPage';
+import VisualizationsPage from "../Pages/VisualizationsPage";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
           <Route path='/' element={<RoomBookingPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/login' element={<LoginPage />} />
+          <Route path='/visualizations' element={<VisualizationsPage />} />
           <Route
             path='/home'
             element={
