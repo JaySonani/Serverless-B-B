@@ -1,19 +1,19 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Container from 'react-bootstrap/Container';
-import Table from 'react-bootstrap/Table';
-import axios from '../Config/AxiosConfig';
-import { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import Spinner from 'react-bootstrap/Spinner';
-const axioss = require('axios');
+import React from "react";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
+import axios from "../Config/AxiosConfig";
+import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner";
+const axioss = require("axios");
 
 const TourBookingPage = () => {
   const [loading, setLoading] = useState(true);
   const [tours, setTours] = useState({});
-  const [ptour, setPtours] = useState('');
+  const [ptour, setPtours] = useState("");
   const [duration, setDuration] = useState(0);
 
   const handleDurationChange = (event) => {
@@ -33,7 +33,7 @@ const TourBookingPage = () => {
         }
       } catch (error) {
         console.error(error.message);
-        toast('Something Went Wrong!');
+        toast("Something Went Wrong!");
       }
       setLoading(false);
     };
@@ -49,16 +49,16 @@ const TourBookingPage = () => {
   ) => {
     try {
       const res = await axioss.post(
-        'https://us-central1-aiplatform.googleapis.com/v1/projects/' +
+        "https://us-central1-aiplatform.googleapis.com/v1/projects/" +
           ProjectId +
-          '/locations/us-central1/endpoints/' +
+          "/locations/us-central1/endpoints/" +
           EndpointId +
-          ':predict',
+          ":predict",
         { instances: { duration: duration } },
         {
           headers: {
-            Authorization: 'Bearer ' + Bearer_token,
-            'content-type': 'application/json',
+            Authorization: "Bearer " + Bearer_token,
+            "content-type": "application/json",
           },
         }
       );
@@ -73,15 +73,14 @@ const TourBookingPage = () => {
 
   const predictTour = async () => {
     const tourTypess = {
-      0: 'Adventure',
-      1: 'WildLife',
-      2: 'Nature',
+      0: "Adventure",
+      1: "WildLife",
+      2: "Nature",
     };
     //You must require Bearer_token for the model
-    const Bearer_token =
-      'ya29.A0AVA9y1tS72A5SM9ablP3t_NqELblV91XJsUWEx6bhEOLnq3fFntMaZT5VEN-paQ0mo7xhzoRyfsZNdggtsFFj5bVOyAPOq6J6aRxXv2v89glzDySuts39JyV-__2IdXR3ORb09c2hF6kWXnSixgWrct6cBAIDTsWtrwLCK0YUNnWUtBVEFTQVRBU0ZRRTY1ZHI4YUdxM1F1aDJlSkMyUXhzUTFzaWNmdw0174';
-    const ProjectId = 'ml-learning-352715';
-    const EndpointId = '8254772661528297472';
+    const Bearer_token = process.env.REACT_APP_BEARER_TOKEN;
+    const ProjectId = "ml-learning-352715";
+    const EndpointId = "8254772661528297472";
 
     const output = await predictPackage(
       duration.toString(),
@@ -108,7 +107,7 @@ const TourBookingPage = () => {
           setTourQuantity(1);
         }
       } else {
-        toast('No of people can only be 1 or more');
+        toast("No of people can only be 1 or more");
         setTourQuantity(1);
       }
     } catch (error) {
@@ -117,28 +116,28 @@ const TourBookingPage = () => {
   };
   return (
     <>
-      {loading && <Spinner animation='border' variant='dark' />}
+      {loading && <Spinner animation="border" variant="dark" />}
       {!loading && (
-        <div style={{ display: 'flex' }}>
-          <div style={{ flex: '1' }}>
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: "1" }}>
             <Container>
               <h2>Predict Tour</h2>
               <Form>
                 <Form.Group>
                   <FloatingLabel
-                    controlId='floatingInputGrid'
-                    label='Stay duration'
+                    controlId="floatingInputGrid"
+                    label="Stay duration"
                     onChange={handleDurationChange}
                   >
-                    <Form.Control type='number' placeholder='1' />
+                    <Form.Control type="number" placeholder="1" />
                   </FloatingLabel>
                 </Form.Group>
-                <div className='d-grid' style={{ margin: '2vh 0vh' }}>
-                  <Button variant='dark' size='lg' onClick={predictTour}>
+                <div className="d-grid" style={{ margin: "2vh 0vh" }}>
+                  <Button variant="dark" size="lg" onClick={predictTour}>
                     Predict
                   </Button>
                 </div>
-                <div className='d-grid' style={{ margin: '2vh 0vh' }}>
+                <div className="d-grid" style={{ margin: "2vh 0vh" }}>
                   {ptour.length > 0 && (
                     <h5>You should select "{ptour}" type of tour!</h5>
                   )}
@@ -149,12 +148,12 @@ const TourBookingPage = () => {
               <h2>Book Tour</h2>
               <Form>
                 <Form.Group
-                  className='mb-3'
-                  controlId='exampleForm.ControlInput'
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput"
                 >
                   <FloatingLabel
-                    controlId='floatingSelectGrid'
-                    label='Tour Type'
+                    controlId="floatingSelectGrid"
+                    label="Tour Type"
                   >
                     <Form.Select
                       value={tourType}
@@ -172,22 +171,22 @@ const TourBookingPage = () => {
                 </Form.Group>
                 <Form.Group>
                   <FloatingLabel
-                    controlId='floatingInputGrid'
-                    label='No. of People'
+                    controlId="floatingInputGrid"
+                    label="No. of People"
                   >
                     <Form.Control
-                      type='number'
-                      min='1'
+                      type="number"
+                      min="1"
                       value={tourQuantity}
                       onChange={(e) => setTourQuantity(e.target.value)}
                     />
                   </FloatingLabel>
                 </Form.Group>
-                <div className='d-grid' style={{ margin: '2vh 0vh' }}>
+                <div className="d-grid" style={{ margin: "2vh 0vh" }}>
                   <Button
-                    variant='dark'
-                    size='lg'
-                    type='submit'
+                    variant="dark"
+                    size="lg"
+                    type="submit"
                     onClick={handleSubmit}
                   >
                     Submit
@@ -196,7 +195,7 @@ const TourBookingPage = () => {
               </Form>
             </Container>
           </div>
-          <div style={{ flex: '1' }}>
+          <div style={{ flex: "1" }}>
             <Container>
               <h2>Prices</h2>
               <Table striped bordered hover>
