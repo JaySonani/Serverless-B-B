@@ -9,49 +9,28 @@ import RegisterPage from '../Pages/RegisterPage';
 import LoginPage from '../Pages/LoginPage';
 import ValidateUserSession from '../Components/ValidateUserSession';
 import ReviewPage from '../Pages/ReviewPage';
-import VisualizationsPage from "../Pages/VisualizationsPage";
+import VisualizationsPage from '../Pages/VisualizationsPage';
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<OutletPage />}>
-          <Route path='/' element={<RoomBookingPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/visualizations' element={<VisualizationsPage />} />
-          <Route
-            path='/home'
-            element={
-              <ValidateUserSession>
-                <HomePage />
-              </ValidateUserSession>
-            }
-          />
-          <Route
-            path='/meals'
-            element={
-              <ValidateUserSession>
-                <MealBookingPage />
-              </ValidateUserSession>
-            }
-          />
-          <Route
-            path='/tours'
-            element={
-              <ValidateUserSession>
-                <TourBookingPage />
-              </ValidateUserSession>
-            }
-          />
-          <Route
-            path='/feedback'
-            element={
-              <ValidateUserSession>
-                <ReviewPage />
-              </ValidateUserSession>
-            }
-          />
+        <Route path='/' element={<RoomBookingPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/visualizations' element={<VisualizationsPage />} />
+        <Route
+          path='/'
+          element={
+            <ValidateUserSession>
+              <OutletPage />
+            </ValidateUserSession>
+          }
+        >
+          <Route path='/home' element={<HomePage />} />
+          <Route path='/meals' element={<MealBookingPage />} />
+          <Route path='/tours' element={<TourBookingPage />} />
+          <Route path='/feedback' element={<ReviewPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

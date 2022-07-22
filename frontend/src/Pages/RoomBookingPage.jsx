@@ -10,6 +10,8 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 
 const RoomBookingPage = (props) => {
   const [loading, setLoading] = useState(true);
@@ -104,6 +106,7 @@ const RoomBookingPage = (props) => {
 
   return (
     <>
+      <Header />
       {loading && <Spinner animation='border' variant='dark' />}
       {!loading && (
         <div style={{ display: 'flex', margin: '5vh' }}>
@@ -216,6 +219,7 @@ const RoomBookingPage = (props) => {
           </Container>
         </div>
       )}
+      <Footer />
     </>
   );
 };
