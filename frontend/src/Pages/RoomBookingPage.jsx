@@ -7,11 +7,11 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+import useAuthHook from '../Hooks/useAuth';
 
 const RoomBookingPage = (props) => {
   const [loading, setLoading] = useState(true);
@@ -22,9 +22,9 @@ const RoomBookingPage = (props) => {
   const [showDialog, setShowDialog] = useState(false);
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
+  const { userAttributes } = useAuthHook(); 
 
   const roomQuantity = [1, 2, 3, 4, 5];
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,23 +47,28 @@ const RoomBookingPage = (props) => {
   const handleClose = () => setShowDialog(false);
 
   const confirmBooking = async (e) => {
-    try {
-      const response = await axios.post(`/book-rooms/`, {
-        checkin_date: checkInDate,
-        checkout_date: checkOutDate,
-        user_id: location.state.userId,
-        room_type: roomType,
-        rooms_qty: roomCount,
-      });
-      if (response.data.success) {
-        console.log(response.data);
-        setShowDialog(false);
-        navigate('/');
-      } else {
-        setShowDialog(false);
+    if(userAttributes.email !== "") {
+      try {
+        const response = await axios.post(`/book-rooms/`, {
+          checkin_date: checkInDate,
+          checkout_date: checkOutDate,
+          user_id: userAttributes.email,
+          room_type: roomType,
+          rooms_qty: roomCount,
+        });
+        if (response.data.success) {
+          console.log(response.data);
+          setShowDialog(false);
+          navigate('/');
+        } else {
+          setShowDialog(false);
+        }
+      } catch (error) {
+        console.error(error.message);
       }
-    } catch (error) {
-      console.error(error.message);
+    }
+    else {
+      navigate('/login');
     }
   };
 
@@ -71,10 +76,7 @@ const RoomBookingPage = (props) => {
     try {
       const response = await axios.post(`/get-available-rooms/`, {
         checkin_date: checkInDate,
-        checkout_date: checkOutDate,
-        user_id: location.state.userId,
-        room_type: roomType,
-        rooms_qty: roomCount,
+        checkout_date: checkOutDate
       });
       if (
         Object.keys(response.data)[0] === checkInDate &&
@@ -174,7 +176,7 @@ const RoomBookingPage = (props) => {
                 type='submit'
                 onClick={(e) => getAvailableRooms(e)}
               >
-                Submit
+                Check Availability
               </Button>
             </div>
             <Modal show={showDialog} onHide={handleClose}>

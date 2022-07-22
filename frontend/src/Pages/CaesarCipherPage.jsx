@@ -4,12 +4,13 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
-import { Row, Col, Spinner, FloatingLabel } from 'react-bootstrap';
+import { Spinner, FloatingLabel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = (props) => {
+const CaesarCipherPage = (props) => {
   const [loading, setLoading] = useState(false);
   const [plainText, setPlainText] = useState('');
+  const [wrongInputError, setWrongInputError] = useState('');
   const navigate = useNavigate();
 
   const handleCaesarCipher = async (event) => {
@@ -22,13 +23,16 @@ const LoginPage = (props) => {
         user_id: props.userId,
         cipher_text: cipherTextInput,
       });
-      if (response.status === 200) {
         if (response.data.success) {
           navigate('/home', { state: { userId: props.userId } });
         }
-      }
+        else {
+          setLoading(false);
+          setWrongInputError("Wrong input! Please try again.")
+        }
     } catch (error) {
-      console.error(error.message);
+        setLoading(false);
+        setWrongInputError("Wrong input! Please try again.")
     }
   };
 
@@ -83,9 +87,10 @@ const LoginPage = (props) => {
             </Button>
           </div>
         </Form>
+        <p style={{color: "red"}}>{wrongInputError}</p>
       </Container>
     </div>
   );
 };
 
-export default LoginPage;
+export default CaesarCipherPage;
