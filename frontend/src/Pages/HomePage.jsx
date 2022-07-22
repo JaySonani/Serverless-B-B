@@ -37,10 +37,7 @@ const HomePage = () => {
     <>
       <div>
         <Container>
-          <h1 style={{ marginBottom: '5vh', marginTop: '5vh' }}>
-            Hello {currentUser} 👋
-          </h1>
-          <h2 style={{ marginBottom: '5vh' }}>Welcome to ServerlessB&B! 🏠</h2>
+          <h1 style={{ margin: '5vh' }}>Welcome to ServerlessB&B! 🏠</h1>
         </Container>
         {loading && <Spinner animation='border' variant='dark' />}
         {!loading && (

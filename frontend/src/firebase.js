@@ -16,8 +16,7 @@ initializeApp(firebaseConfig);
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const messaging = getMessaging(firebaseApp);
-const currentUser = 'rh346685@dal.ca';
-export const fetchToken = (setTokenFound) => {
+export const fetchToken = (setTokenFound, currentUser) => {
   return getToken(messaging, {
     vapidKey:
       'BM1LZsJ_7TW4PfRZo_WN9Eq0p7cuM5BGt0AooYXvgbr_JedFbS_kwzMsO6INruP9IETKOTkhmKStk8pnT5zX1_Y',
