@@ -94,12 +94,17 @@ def main(request):
         }
         # push the notific
         print("------PUSHING NOTIFICATION-------")
+        rooms = ["NonAC","AC","Deluxe","Suite"]
+        amount_ref = db.collection('rooms').document(rooms.index(room_type)+1)
+        amount = amount_ref.get().to_dict()['room_price'] * rooms_qty
+
         notific_ref = db.collection('notifications').document(user_id)
         if(notific_ref.get().exists):
           notific_ref.update({
             u'invoices': firestore.ArrayUnion([{
-              "room_type": room_type,
-              "stay_length": len(all_dates),
+              "amount": amount,
+              "order_id": user_id,
+              "order_type": room_type,
               "status": "confirmed"
             }])
           })
