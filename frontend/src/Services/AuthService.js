@@ -174,6 +174,7 @@ export const logoutUser = () => {
         currentUser.globalSignOut({
           onSuccess: async () => {
             localStorage.removeItem('security-question-answer-status');
+            localStorage.removeItem('cipher-key-verification-status');
             document.dispatchEvent(userLogOutEvent);
             await axios.post('/set-user-status', {
               email,

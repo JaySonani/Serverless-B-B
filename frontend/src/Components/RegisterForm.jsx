@@ -19,6 +19,7 @@ const FormModes = Object.freeze({
   Registration: Symbol('registration'),
   OtpVerification: Symbol('otp_verification'),
   SecurityQuestion: Symbol('security_question'),
+  CipherKey: Symbol('cipher_key'),
   Success: Symbol('success'),
 });
 
@@ -57,6 +58,9 @@ class RegisterForm extends React.Component {
       securityQuestionsFormErrors: {
         question: '',
         answer: '',
+      },
+      cipherKeyFormError: {
+        cipherKey: ''
       },
       loading: false,
       redirectToLogin: false,
@@ -235,7 +239,7 @@ class RegisterForm extends React.Component {
       })
       .then(() => {
         this.setState({
-          formMode: FormModes.Success,
+          formMode: FormModes.CipherKey,
           loading: false,
         });
       })
@@ -246,6 +250,48 @@ class RegisterForm extends React.Component {
         });
       });
   };
+
+  handleCipherKeyFormSubmission = async (e) => {
+    e.preventDefault();
+
+    const cipherKey = e.target.cipher_key.value;
+    const cipherKeyAsInt = parseInt(cipherKey)
+
+    if (!Number.isNaN(cipherKeyAsInt) && cipherKeyAsInt >= 0 && cipherKeyAsInt <= 25) {
+      this.setState({
+        cipherKeyFormError: {
+          cipherKey: ''
+        },
+        loading: true
+      });
+
+      try {
+        await axios.post('/store-cipher-key', {
+          email: this.state.registrationValues.email,
+          key: cipherKey
+        });
+
+        this.setState({
+          formMode: FormModes.Success,
+          loading: false
+        });
+      } catch (error) {
+        console.log(error);
+        this.setState({
+          loading: false,
+          cipherKeyFormError: {
+            cipherKey: 'Your cipher key could not be saved, please try again.'
+          }
+        });
+      }
+    } else {
+      this.setState({
+        cipherKeyFormError: {
+          cipherKey: 'Cipher key should be an integer between 0 and 25.'
+        }
+      });
+    }
+  }
 
   redirectUserToLogin = () => this.setState({ redirectToLogin: true });
 
@@ -262,10 +308,12 @@ class RegisterForm extends React.Component {
     const { question: questionError, answer: answerError } =
       this.state.securityQuestionsFormErrors;
 
+    const { cipherKey: cipherKeyError } = this.state.cipherKeyFormError;
+
     if (this.state.redirectToLogin) {
       return <Navigate to='/login' />;
     }
-    // security question UI
+
     if (this.state.formMode === FormModes.Success) {
       return (
         <Container
@@ -286,6 +334,66 @@ class RegisterForm extends React.Component {
       );
     }
 
+    if (this.state.formMode === FormModes.CipherKey) {
+      return (
+        <Container
+          style={{
+            margin: '32px auto',
+            display: 'flex',
+            flexFlow: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <h1>Caesar Cipher Key</h1>
+          <p>Please input an integer value between 0 and 25 as your key.</p>
+          <Container style={{ width: '50%', textAlign: 'left' }}>
+            <Form
+              method='POST'
+              onSubmit={this.handleCipherKeyFormSubmission}
+              style={{ marginTop: '32px' }}
+            >
+              <Form.Group style={{ marginBottom: '24px' }}>
+                <FloatingLabel controlId='cipher_key' label='Your Cipher Key'>
+                  <Form.Control
+                    name='cipher_key'
+                    type='text'
+                    placeholder='Your Cipher Key'
+                  />
+                  {cipherKeyError && (
+                    <Form.Text style={{ color: 'red', fontWeight: 'bold' }}>
+                      *{cipherKeyError}
+                    </Form.Text>
+                  )}
+                </FloatingLabel>
+              </Form.Group>
+              <div className='d-grid' style={{ margin: '2vh 0vh' }}>
+                <Button
+                  variant='dark'
+                  size='lg'
+                  name='submit'
+                  type='submit'
+                  disabled={this.state.loading}
+                >
+                  <Spinner
+                    hidden={!this.state.loading}
+                    animation='grow'
+                    as='span'
+                    size='sm'
+                    role='status'
+                    aria-hidden='true'
+                    style={{ marginRight: '8px' }}
+                  />
+                  Save Cipher Key
+                </Button>
+              </div>
+            </Form>
+          </Container>
+        </Container>
+      );
+    }
+
+    // security question UI
     if (this.state.formMode === FormModes.SecurityQuestion) {
       return (
         <Container

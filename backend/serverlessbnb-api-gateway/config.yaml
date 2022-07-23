@@ -424,3 +424,34 @@ paths:
           description: "Server Error"
           schema:
             type: string
+  /store-cipher-key:
+    options:
+      operationId: "store-cipher-key-cors"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/store-cipher-key
+      responses:
+        "200":
+          description: "Success"
+    post:
+      description: "store-cipher-key"
+      operationId: "store-cipher-key"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              key:
+                type: number
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/store-cipher-key
+      responses:
+        "200":
+          description: "Success"
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
