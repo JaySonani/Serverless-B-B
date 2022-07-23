@@ -10,6 +10,7 @@ import LoginPage from '../Pages/LoginPage';
 import ValidateUserSession from '../Components/ValidateUserSession';
 import ReviewPage from '../Pages/ReviewPage';
 import VisualizationsPage from '../Pages/VisualizationsPage';
+import ChatBot from "../Components/ChatBot"
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path='/feedback' element={<ReviewPage />} />
         </Route>
       </Routes>
+      <ChatBot />
     </BrowserRouter>
   );
 };
