@@ -29,6 +29,7 @@ const Header = () => {
             {isAuthenticated ? (
               <>
                 <Nav.Link>{userAttributes.email}</Nav.Link>
+                <Nav.Link onClick={() => navigate('/login-statistics', { state: { userId: userAttributes.email } }) }>Login Statistics</Nav.Link>
                 <Nav.Link onClick={() => logoutUser()}>Log Out</Nav.Link>
               </>
             ) : (

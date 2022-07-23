@@ -27,6 +27,9 @@ const CaesarCipherPage = (props) => {
         if (response.data.success) {
           document.dispatchEvent(userLogInEvent);
           localStorage.setItem('cipher-key-verification-status', 'verified');
+          await axios.post('/update_session_timestamp/', {
+            email: props.userId,
+          })
           navigate('/home', { state: { userId: props.userId } });
         }
         else {

@@ -11,6 +11,7 @@ import ValidateUserSession from '../Components/ValidateUserSession';
 import ReviewPage from '../Pages/ReviewPage';
 import VisualizationsPage from '../Pages/VisualizationsPage';
 import ChatBot from "../Components/ChatBot"
+import LoginStatisticsPage from '../Pages/LoginStatisticsPage';
 
 const AppRoutes = () => {
   return (
@@ -32,6 +33,7 @@ const AppRoutes = () => {
           <Route path='/meals' element={<MealBookingPage />} />
           <Route path='/tours' element={<TourBookingPage />} />
           <Route path='/feedback' element={<ReviewPage />} />
+          <Route path='/login-statistics' element={<LoginStatisticsPage />} />
         </Route>
       </Routes>
       <ChatBot />

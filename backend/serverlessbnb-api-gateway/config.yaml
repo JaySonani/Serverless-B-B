@@ -455,3 +455,54 @@ paths:
           description: "Server Error"
           schema:
             type: string
+  /update_session_timestamp:
+    post:
+      description: "update_session_timestamp"
+      operationId: "update_session_timestamp"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/update_session_timestamp
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+  /get_user_session_stats:
+    get:
+      description: "get_user_session_stats"
+      operationId: "get_user_session_stats"
+      parameters: 
+        - in: path
+          name: email
+          type: string
+          required: true
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get_user_session_stats
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string
+        "500":
+          description: "Server Error"
+          schema:
+            type: string
+    options:
+      operationId: "update_session_timestamp-options"
+      x-google-backend:
+        address: https://us-central1-serverlessbnb-354422.cloudfunctions.net/get_user_session_stats
+      responses:
+        "200":
+          description: A successful response
