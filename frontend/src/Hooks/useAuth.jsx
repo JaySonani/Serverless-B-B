@@ -12,6 +12,7 @@ const useAuthHook = () => {
   });
   const [fetchingUserDetails, setFetchingUserDetails] = useState(true);
   const [isSecurityQuestionAnswered, setIsSecurityQuestionAnswered] = useState(false);
+  const [isCipherKeyVerified, setIsCipherKeyVerified] = useState(false);
   const navigate = useNavigate();
 
   const logOutEventHandler = useCallback(() => {
@@ -40,6 +41,10 @@ const useAuthHook = () => {
           setIsSecurityQuestionAnswered(true);
         }
 
+        if (localStorage.getItem('cipher-key-verification-status', 'answered')) {
+          setIsCipherKeyVerified(true);
+        }
+
         getCurrentUserAttributes()
           .then((attributes) => {
             setUserAttributes(attributes);
@@ -66,11 +71,12 @@ const useAuthHook = () => {
           email_verified: false
         });
         setIsSecurityQuestionAnswered(false);
+        setIsCipherKeyVerified(false);
       });
   }
 
   return {
-    isAuthenticated: isAuthenticated && isSecurityQuestionAnswered,
+    isAuthenticated: isAuthenticated && isSecurityQuestionAnswered && isCipherKeyVerified,
     userAttributes,
     fetchingUserDetails
   }

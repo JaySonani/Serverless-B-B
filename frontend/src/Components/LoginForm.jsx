@@ -9,7 +9,6 @@ import {
 import {
   authenticateUser,
   isUserSessionActive,
-  userLogInEvent,
 } from '../Services/AuthService';
 import axios from '../Config/AxiosConfig';
 import CaesarCipherPage from '../Pages/CaesarCipherPage';
@@ -17,7 +16,7 @@ import CaesarCipherPage from '../Pages/CaesarCipherPage';
 const FormModes = Object.freeze({
   Login: Symbol('login'),
   SecurityQuestion: Symbol('security_question'),
-  Success: Symbol('success'),
+  CipherKey: Symbol('cipher_key'),
 });
 
 class LoginForm extends React.Component {
@@ -40,7 +39,7 @@ class LoginForm extends React.Component {
     isUserSessionActive()
       .then(() =>
         this.setState({
-          formMode: FormModes.Success,
+          formMode: FormModes.CipherKey,
         })
       )
       .catch(() => {});
@@ -49,32 +48,34 @@ class LoginForm extends React.Component {
   handleLoginSubmit = async (event) => {
     event.preventDefault();
 
-    this.setState({ loading: true });
-
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    const emailFormErrors = {
+    const loginFormErrors = {
       email: '',
       password: '',
     };
 
     if (email === null || email === undefined || email.length === 0) {
-      emailFormErrors.email = 'Please enter an email.';
+      loginFormErrors.email = 'Please enter an email.';
     }
 
     if (password === null || password === undefined || password.length === 0) {
-      emailFormErrors.password = 'Please enter a password.';
+      loginFormErrors.password = 'Please enter a password.';
     }
 
-    if (emailFormErrors.email !== '' || emailFormErrors.password !== '') {
+    if (loginFormErrors.email !== '' || loginFormErrors.password !== '') {
       this.setState({
-        emailFormErrors,
-        loading: false,
+        loginFormErrors,
       });
 
       return;
     }
+
+    this.setState({
+      loading: true,
+      loginFormErrors
+    });
 
     try {
       await authenticateUser(email, password);
@@ -89,6 +90,11 @@ class LoginForm extends React.Component {
       });
     } catch (error) {
       console.log(error);
+      this.setState({
+        loginFormErrors: {
+          password: 'Incorrect email ID or password provided.'
+        }
+      });
     }
 
     this.setState({
@@ -99,10 +105,6 @@ class LoginForm extends React.Component {
   handleSecurityQuestionSubmit = async (event) => {
     event.preventDefault();
 
-    this.setState({
-      loading: true,
-    });
-
     const answer = event.target.answer.value;
 
     if (answer === null || answer === undefined || answer.length === 0) {
@@ -112,6 +114,11 @@ class LoginForm extends React.Component {
 
       return;
     }
+
+    this.setState({
+      loading: true,
+      securityQuestionAnswerError: ''
+    });
 
     try {
       await axios.post('/validate-security-question-answer', {
@@ -124,12 +131,13 @@ class LoginForm extends React.Component {
         email: this.state.email,
         status: true,
       });
-      document.dispatchEvent(userLogInEvent);
       this.setState({
-        formMode: FormModes.Success,
+        formMode: FormModes.CipherKey,
       });
     } catch (error) {
-      console.log(error);
+      this.setState({
+        securityQuestionAnswerError: 'Incorrect answer provided.'
+      });
     }
 
     this.setState({
@@ -141,7 +149,7 @@ class LoginForm extends React.Component {
     const { email: emailError, password: passwordError } =
       this.state.loginFormErrors;
 
-    if (this.state.formMode === FormModes.Success) {
+    if (this.state.formMode === FormModes.CipherKey) {
       const { email } = this.state;
       return (
         <Container

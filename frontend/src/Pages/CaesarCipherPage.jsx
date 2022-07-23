@@ -6,6 +6,7 @@ import axios from '../Config/AxiosConfig';
 import { useState, useEffect } from 'react';
 import { Spinner, FloatingLabel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { userLogInEvent } from '../Services/AuthService';
 
 const CaesarCipherPage = (props) => {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,8 @@ const CaesarCipherPage = (props) => {
         cipher_text: cipherTextInput,
       });
         if (response.data.success) {
+          document.dispatchEvent(userLogInEvent);
+          localStorage.setItem('cipher-key-verification-status', 'verified');
           navigate('/home', { state: { userId: props.userId } });
         }
         else {
