@@ -180,6 +180,9 @@ export const logoutUser = () => {
               email,
               status: false
             });
+            await axios.post('/update_session_timestamp/', {
+              email: email,
+            })
             window.location.assign('/login');
           },
           onFailure: (error) => {
