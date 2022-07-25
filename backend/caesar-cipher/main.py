@@ -12,7 +12,7 @@ def main(request):
     if(request.method == 'OPTIONS'):
         headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Methods': 'PUT, POST, GET, DELETE, PATCH, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Max-Age': '3600',
 
@@ -26,11 +26,14 @@ def main(request):
     user_id = request_json['user_id']
     key = None
 
-    cred = credentials.ApplicationDefault()
 
-    default_app = firebase_admin.initialize_app(cred, {
-    'projectId': 'serverlessbnb-354422',
-    })
+    if not firebase_admin._apps:
+        cred = credentials.ApplicationDefault()
+
+        default_app = firebase_admin.initialize_app(cred, {
+        'projectId': 'serverlessbnb-354422',
+        })
+
     
     db = firestore.client()
 
