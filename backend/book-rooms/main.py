@@ -39,12 +39,12 @@ def main(request):
     all_dates = getAllDates(checkin_date, checkout_date)
 
     room_type_str = 'count_' + room_type
+    if not firebase_admin._apps:
+      cred = credentials.ApplicationDefault()
 
-    cred = credentials.ApplicationDefault()
-
-    default_app = firebase_admin.initialize_app(cred, {
-    'projectId': 'serverlessbnb-354422',
-    })
+      default_app = firebase_admin.initialize_app(cred, {
+      'projectId': 'serverlessbnb-354422',
+      })
     
     db = firestore.client()
 
@@ -56,7 +56,7 @@ def main(request):
       doc_date_ref = room_availability.document(everyDay)
       doc = doc_date_ref.get()
       if(doc.exists):
-        if(doc.to_dict()[room_type_str] >= rooms_qty):
+        if(doc.to_dict()[room_type_str] >= int(rooms_qty)):
           continue
       isRoomAvailable = False
       resp = {
@@ -95,7 +95,7 @@ def main(request):
         # push the notific
         print("------PUSHING NOTIFICATION-------")
         rooms = ["NonAC","AC","Deluxe","Suite"]
-        amount_ref = db.collection('rooms').document(rooms.index(room_type)+1)
+        amount_ref = db.collection('rooms').document(str(rooms.index(room_type)+1))
         amount = amount_ref.get().to_dict()['room_price'] * rooms_qty
 
         notific_ref = db.collection('notifications').document(user_id)
@@ -116,15 +116,9 @@ def main(request):
           })
         else:
           print("NOTIFICATION PUSHING FAILED. USER'S DOCUMENT NOT FOUND")
-
-
-      
-
-        # 
     else:    
       final_response = {
         "message": "Not enough rooms available",
         "success": False
       }
     return (final_response, 200, headers)
-
